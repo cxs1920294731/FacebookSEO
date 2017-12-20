@@ -28,7 +28,7 @@
     <script type="text/javascript" src="/Scripts/jquery-1.4.1.min.js"></script>
     <script type="text/javascript" src="/Scripts/jquery-1.10.2.js"></script>
     <script type ="text/javascript">
-         // GA tracking code 
+         // GA tracking code
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
                 (i[r].q = i[r].q || []).push(arguments);
@@ -36,7 +36,6 @@
             m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g;
             m.parentNode.insertBefore(a, m);
         })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
         ga('create', 'UA-49545219-1', 'auto');
         ga('send', 'pageview');
     </script>
@@ -74,22 +73,18 @@
                 If (product.Currency.Trim = "WB") Then
                     writeStr = "发布日期：" & product.ExpiredDate & " &nbsp;&nbsp; 来源：新浪微博 &nbsp;&nbsp; "
                     writeStr = writeStr + "<img src='/images/sinaweibologo.JPG'/><br/>"
-                    writeStr = writeStr + "点击查看香港K11的<a href ='" & shopsite.shopUrl & "' style='color:#0664c1;text-decoration:none;'>" & shopsite.SiteNameSc & "</a>店铺信息。"
+                    writeStr = writeStr + "点击查看香港groupbuyer的<a href ='" & shopsite.shopUrl & "' style='color:#0664c1;text-decoration:none;'>" & shopsite.SiteNameSc & "</a>店铺信息。"
                 Else
                     writeStr = "發佈日期：" & product.ExpiredDate & " &nbsp;&nbsp; 來源：Facebook &nbsp;&nbsp;"
                     writeStr = writeStr & "<img src='/images/facebooklogo.JPG'/><br/> "
-                    writeStr = writeStr + "點擊查看香港K11的<a href ='" & shopsite.shopUrl & "' style='color:#0664c1;text-decoration:none;'>" & shopsite.SiteName & "</a>店鋪信息。"
+                    writeStr = writeStr + "點擊查看香港groupbuyer的<a href ='" & shopsite.shopUrl & "' style='color:#0664c1;text-decoration:none;'>" & shopsite.SiteName & "</a>店鋪信息。"
                 End If
                 Response.Write(writeStr)
-                
                 %>
         </div>
-        
         <div style ="height:50px;width:1px;"></div>
-
         <%--footer--%>
         <%=footer  %>
-    
     <%--footer--%>
 </body>
 </html>

@@ -11,3 +11,42 @@
         .paginator .cpb {padding: 6px 12px;font-weight: bold; font-size: 16px;border:none}
         .paginator a:hover {color: #fff; background: #d4d4d4;border-color:#d4d4d4;text-decoration: none;}
     </style>
+<script>
+    //目的：解决时间过长问题
+    //思路：优化字符串查找的算法
+    //步骤：
+    var lengthOfLongestSubstring = function (s) {
+        var max = 0, index;
+        var x = 0, array = [];
+        for (let i = 0, j = s.length; i < j; i++) {
+            array.unshift(s[i]);//加到最前面
+            index = is_check(array, s[i + 1]);
+
+            if (index > -1) {
+                array.splice(-1, index + 1);
+                if (max < x) {
+                    max = x;
+                }
+                x = x - index + 1;
+            } else {
+                x++;
+            }
+            if (max > (j - i)) {
+                break;
+            }
+        }
+        console.log(max);
+        return max;
+    };
+    //存在返回索引。不存在返回-1
+    var is_check = function (s, index) {
+        var j = s.length;
+        for (let i = 0; i < j ; i++) {
+            if (s[i] == index) {
+                return i+1;
+            }
+        }
+        return -1;
+    };
+    lengthOfLongestSubstring("abcabcbb");
+</script>

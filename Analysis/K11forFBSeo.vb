@@ -27,10 +27,9 @@ Public Class K11forFBSeo
         Dim listProduct As New List(Of Product)
         listProduct = FetchfbPosts(fbPageName, maxLimit, accessToken, siteId)
         Common.LogText(listProduct.Count.ToString + "收录的条数")
-        efHelper.insertK11Products(listProduct, "k11", "CA", planType, maxLimit, siteId, IssueID)
+        efHelper.insertK11Products(listProduct, "groupbuyer", "CA", planType, maxLimit, siteId, IssueID)
         'efHelper.insertProducts(listProduct, "k11", "CA", planType, maxLimit, siteId, IssueID)
     End Sub
-
     Private Shared Sub GetCategory(ByVal siteId As Integer, ByVal siteUrl As String)
         Dim lastUpdate As DateTime = Now
         Dim helper As New EFHelper
@@ -85,7 +84,6 @@ Public Class K11forFBSeo
                 If (type = "photo") Then
                     'If (1) Then 
                     Dim myPro As New Product()
-                    Common.LogText("开始读取图片")
 
                     myPro.Description = item("message").ToString.Trim()
                     item.TryGetValue("created_time", myPro.ExpiredDate)
@@ -124,13 +122,9 @@ Public Class K11forFBSeo
                     'Index = littleImage.Count - 1
                     'End If
                     'littleImageUrl = littleImage(index)("source").ToString.Trim()
-                    Common.LogText("图片下载测试点1")
-                    littleImageUrl = photoJson("picture").ToString.Trim 'by --Roy
-                    Common.LogText("测试是否图片下载成功")
+                    littleImageUrl = photoJson("full_picture").ToString.Trim 'by --Roy
                     myPro.Prodouct = DownloadImage(littleImageUrl, _filepath, _fileName, siteID) '小图
-                    Common.LogText("图片下载成功" + myPro.PictureUrl.ToString + myPro.Prodouct.ToString)
                     If (Not String.IsNullOrEmpty(myPro.PictureUrl) AndAlso Not String.IsNullOrEmpty(myPro.Prodouct)) Then '如没有获取到图片，则不收录此post
-                        Common.LogText("收录消息")
                         listProduct.Add(myPro)
                     End If
                 End If

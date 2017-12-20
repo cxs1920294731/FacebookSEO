@@ -17,14 +17,11 @@ Public Class Post1
 
     Public shopsite As AutomationSite = New AutomationSite()
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-
-
         'Dim siteid As Integer = Request.QueryString("siteid")
         Dim productID As String = Request.QueryString("id")
         If (String.IsNullOrEmpty(productID)) Then
             Response.Redirect("Default.aspx")
         End If
-
         product = (From p In entity.Products
                    Where (p.ProdouctID = productID)
                    Select p).FirstOrDefault()
@@ -40,11 +37,11 @@ Public Class Post1
         If (hostname.ToLower().Contains("k11")) Then
             msiteid = Integer.Parse(ConfigurationManager.AppSettings("k11ID").ToString().Trim())
         Else
-            msiteid = 79 '本地测试环境
+            msiteid = 168 '本地测试环境
         End If
 
-        Dim pageTitlek11 As String = "<a href ='/' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港尖沙咀K11動態</a>  "
-        Dim pageTitlek11Sc As String = "<a href ='/tst' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港尖沙咀K11动态</a>  "
+        Dim pageTitlek11 As String = "<a href ='/' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港groupbuyer動態</a>  "
+        Dim pageTitlek11Sc As String = "<a href ='/tst' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港groupbuyer动态</a>  "
         Dim pageTitleAllshop As String = "|&nbsp; <a href='/AllShops'   style='color:#3e3e3e;text-decoration:none;font-weight :bolder ;font-size: 18px;'>商店一覽</a> &gt; &nbsp; "
         Dim pageTitleAllshopSc As String = "|&nbsp; <a href='/tst/AllShops'   style='color:#3e3e3e;text-decoration:none;font-weight :bolder ;font-size: 18px;'>商店一览</a> &gt; &nbsp; "
         Dim pageTitleShopName As String = "&gt; &nbsp;<a href='[URL]'  style='color:#3e3e3e; text-decoration:none;font-weight :bold ;' > [SITENAME] </a>&nbsp;  "

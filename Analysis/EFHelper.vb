@@ -456,13 +456,10 @@ Public Class EFHelper
             request.AllowAutoRedirect = True
             '设置代理
 
-            Common.LogText("测试点4")
             'WebRequest.Create方法，返回WebRequest的子类HttpWebRequest
             Dim response As WebResponse = request.GetResponse()
-            Common.LogText("测试点5")
             'WebRequest.GetResponse方法，返回对 Internet 请求的响应
             Dim resStream As Stream = response.GetResponseStream()
-            Common.LogText("测试点6")
             'WebResponse.GetResponseStream 方法，从 Internet 资源返回数据流。
             Dim myencoding As Encoding
             If (pageEncoding Is Nothing Or String.IsNullOrEmpty(pageEncoding)) Then
@@ -1887,11 +1884,7 @@ Public Class EFHelper
         Dim queryCategory = From c In efContext.Categories Where c.CategoryID = categoryId Select c
         Dim category As Category = queryCategory.FirstOrDefault()
         Dim product As New Product()
-        Common.LogText(aProductInList.Prodouct.ToString())
-        Common.LogText(aProductInList.Url.ToString())
-        Common.LogText(aProductInList.Price.ToString())
-        Common.LogText(aProductInList.PictureUrl.ToString())
-        Common.LogText(aProductInList.Prodouct.ToString())
+
         Common.LogText("开始插入产品表")
 
         product.Prodouct = aProductInList.Prodouct
@@ -1914,7 +1907,6 @@ Public Class EFHelper
                 efContext.SaveChanges()
                 Return product.ProdouctID
             Catch ex As Exception
-                Common.LogText("对不起，我又出错了1，InsertProduct ERROR: " & ex.ToString)
                 LogText("InsertProduct ERROR: " & ex.ToString)
                 Return -1
             End Try
@@ -4483,7 +4475,6 @@ Public Class EFHelper
         Dim listProduct As List(Of Product) = GetProductList(siteId)
         Dim listProductId As New List(Of Integer)
         Dim categoryId As Integer = GetCategoryId(siteId, categoryName)
-        Common.LogText("进入insert函数")
         For Each li In listProducts
 
             Dim returnId As Integer = InsertK11Product(li, Now, categoryId, listProduct)

@@ -14,7 +14,6 @@ Public Class _Default1
 
     Public pageTitle As String = ""
 
-
     Dim languageType As String = ""
     Public prodType As String = ""
 
@@ -27,16 +26,14 @@ Public Class _Default1
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         'Dim dfd As String() = Request.UserLanguages
-
+        '获取主机名称
         Dim hostname As String = Request.ServerVariables("server_name")
         Common.LogText("hostName:" & hostname)
         If (hostname.ToLower().Contains("k11")) Then
             msiteid = Integer.Parse(ConfigurationManager.AppSettings("k11ID").ToString().Trim())
         Else
-            msiteid = 79 '本地测试环境
+            msiteid = 168 '本地测试环境
         End If
-
-
         If Not (Request.QueryString("languageType") Is Nothing) Then
             languageType = Request.QueryString("languageType")
         End If
@@ -44,24 +41,26 @@ Public Class _Default1
         If (languageType = "tst") Then
             prodType = "WB"
         End If
-
+        '获取从url传的参数
+        '传的是店铺id
         Dim pSiteid As String = Request.QueryString("siteid")
         Dim shopName As String = Request.QueryString("sitename")
-
+        '标签ID
         Dim cateId As String = Request.QueryString("cateId")
+        '关键词
         Dim keyWordId As String = Server.UrlDecode(Request.QueryString("keyWordId"))
         Dim KeyWord As String
 
         Dim templateName As String
         Dim k11siteUrl As String
 
-        Dim defaultPageTitle As String = "  香港尖沙咀K11購物藝術館"
-        Dim defaultPageTitleSc As String = "  香港尖沙咀K11购物艺术馆"
-        Dim mateDescriptionSc As String = "香港K11商场是全球首个购物艺术馆。K11香港购物中心也是把艺术，人文，自然三大核心元素融合的香港艺术馆。"
-        Dim mateDescription As String = "香港K11商場是全球首個購物藝術館。K11香港購物中心也是把藝術，人文，自然三大核心元素融合的香港藝術館。"
+        Dim defaultPageTitle As String = " GroupBuyer"
+        Dim defaultPageTitleSc As String = "  GroupBuyer"
+        Dim mateDescriptionSc As String = "香港Group Buyer不断为您争取最新，最抵最多的消费优惠，竭力把团购建立一种香港人·的生活习惯。"
+        Dim mateDescription As String = "香港Group Buyer不斷為您爭取最新，最抵最多的消費優惠，竭力把團購建立壹種香港人·的生活習慣。"
 
-        Dim pageTitlek11 As String = "<a href ='/' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港尖沙咀K11動態</a>  "
-        Dim pageTitlek11Sc As String = "<a href ='/tst' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港尖沙咀K11动态</a>  "
+        Dim pageTitlek11 As String = "<a href ='/' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港groupbuyer動態</a>  "
+        Dim pageTitlek11Sc As String = "<a href ='/tst' style='color:#3e3e3e; text-decoration:none;font-weight :bold ;'> 香港groupbuyer动态</a>  "
         Dim pageTitleAllshop As String = "|&nbsp; <a href='/AllShops'   style='color:#3e3e3e;text-decoration:none;font-weight :bolder ;font-size: 18px;'>商店一覽</a> &gt; &nbsp; "
         Dim pageTitleAllshopSc As String = "|&nbsp; <a href='/tst/AllShops'   style='color:#3e3e3e;text-decoration:none;font-weight :bolder ;font-size: 18px;'>商店一览</a> &gt; &nbsp; "
         Dim pageTitleShopName As String = "&gt; &nbsp;<a href='[URL]'  style='color:#3e3e3e; text-decoration:none;font-weight :bold ;' > [SITENAME] </a>&nbsp;  "
@@ -71,17 +70,16 @@ Public Class _Default1
             k11siteUrl = "#"
             If Not (String.IsNullOrEmpty(cateId)) Then
                 Dim cateTag As CateTag = (From cate In entity.CateTags
-                                         Where cate.ID = cateId
-                                         Select cate).FirstOrDefault()
+                                          Where cate.ID = cateId
+                                          Select cate).FirstOrDefault()
                 Dim parentCateTag As CateTag = (From cate In entity.CateTags
-                    Where cate.ID = cateTag.ParentID
-                    Select cate).FirstOrDefault()
+                                                Where cate.ID = cateTag.ParentID
+                                                Select cate).FirstOrDefault()
                 If (cateTag.HasShopID Is Nothing) Then
                     siteid = "20" '20在数据库中是个不存在的店铺id
                 Else
                     siteid = cateTag.HasShopID.Trim
                 End If
-
                 If (prodType = "WB") Then
                     AspNetPager1.EnableUrlRewriting = True
                     AspNetPager1.UrlRewritePattern = "/ctag/tst/" & cateTag.CateNameSC.Trim() & "/" & cateId & "{0}.aspx"
@@ -103,8 +101,8 @@ Public Class _Default1
             ElseIf Not (String.IsNullOrEmpty(keyWordId)) Then
 
                 KeyWord = (From k In entity.KeyWords
-                                         Where k.ID = keyWordId
-                                         Select k.KeyWord1).FirstOrDefault
+                           Where k.ID = keyWordId
+                           Select k.KeyWord1).FirstOrDefault
                 siteid = "-2"
                 If (prodType = "WB") Then
                     AspNetPager1.EnableUrlRewriting = True
@@ -146,15 +144,13 @@ Public Class _Default1
                     If (String.IsNullOrEmpty(shopName)) Then
                         siteid = "0"
                         AspNetPager1.EnableUrlRewriting = True
-                        AspNetPager1.UrlRewritePattern = "/{0}.aspx"
-
+                        AspNetPager1.UrlRewritePattern = "/{0}"
                         Page.Title = defaultPageTitle
                         Page.MetaDescription = mateDescription
-
                     ElseIf (shopName = "AllShops") Then
                         siteid = "-1"
                         AspNetPager1.EnableUrlRewriting = True
-                        AspNetPager1.UrlRewritePattern = "/" & shopName.Trim() & "/{0}.aspx"
+                        AspNetPager1.UrlRewritePattern = "/" & shopName.Trim() & "/{0}"
 
                         Page.Title = "商店一覽" & " " & defaultPageTitle
                         Page.MetaDescription = mateDescription
@@ -166,6 +162,7 @@ Public Class _Default1
                 shopName = ""
             End If
         Else
+            'Dim pSite As Product = (From pro In entity.Products Where pro.ProdouctID = pSiteid).FirstOrDefault()
             siteid = Integer.Parse(pSiteid)
             Dim shopsite As AutomationSite = (From autosite In entity.AutomationSites
                                              Where autosite.siteid = siteid
@@ -192,26 +189,28 @@ Public Class _Default1
             End If
             pageTitle = pageTitle.Replace("[SITENAME]", shopName).Replace("[URL]", UrlValid.getUrlValid(k11siteUrl))
         End If
-
+        If 1 Then
+            Dim s As Integer
+            s = 3
+        End If
         If (prodType = "WB") Then
             header = (From t In entity.Templates
-                   Where t.SiteID = msiteid And t.TemplateName = "HeaderSC"
-                   Select t.Contents).FirstOrDefault()
+                      Where t.SiteID = msiteid And t.TemplateName = "HeaderSC"
+                      Select t.Contents).FirstOrDefault()
 
             footer = (From t In entity.Templates
-                    Where t.SiteID = msiteid And t.TemplateName = "FooterSC"
-                    Select t.Contents).FirstOrDefault()
+                      Where t.SiteID = msiteid And t.TemplateName = "FooterSC"
+                      Select t.Contents).FirstOrDefault()
             k11Description = (From t In entity.Templates
-                    Where t.SiteID = msiteid And t.TemplateName = "k11DescriptionSC"
-                    Select t.Contents).FirstOrDefault()
+                              Where t.SiteID = msiteid And t.TemplateName = "k11DescriptionSC"
+                              Select t.Contents).FirstOrDefault()
         Else
             header = (From t In entity.Templates
                Where t.SiteID = msiteid And t.TemplateName = "Header"
                Select t.Contents).FirstOrDefault()
-
             footer = (From t In entity.Templates
-                    Where t.SiteID = msiteid And t.TemplateName = "Footer"
-                    Select t.Contents).FirstOrDefault()
+                      Where t.SiteID = msiteid And t.TemplateName = "Footer"
+                      Select t.Contents).FirstOrDefault()
             k11Description = (From t In entity.Templates
                     Where t.SiteID = msiteid And t.TemplateName = "k11Description"
                     Select t.Contents).FirstOrDefault()
@@ -232,24 +231,24 @@ Public Class _Default1
             totalProducts = 5
             If (prodType = "") Then
                 homePage = (From t In entity.Templates
-                    Where t.SiteID = msiteid And t.TemplateName = "HomePage"
-                    Select t.Contents).FirstOrDefault()
+                            Where t.SiteID = msiteid And t.TemplateName = "HomePage"
+                            Select t.Contents).FirstOrDefault()
             Else
                 homePage = (From t In entity.Templates
-                   Where t.SiteID = msiteid And t.TemplateName = "HomePageSC"
-                   Select t.Contents).FirstOrDefault()
+                            Where t.SiteID = msiteid And t.TemplateName = "HomePageSC"
+                            Select t.Contents).FirstOrDefault()
             End If
 
         ElseIf (siteid = "-1") Then '店铺一览，所有店铺
             If (prodType = "") Then
                 totalProducts = (From p In entity.Products
-                                               Select p).Count()
+                                 Select p).Count()
             Else
                 totalProducts = (From p In entity.Products
                                  Where p.Currency = prodType
-                                               Select p).Count()
+                                 Select p).Count()
             End If
-        ElseIf (siteid = "-2") Then
+        ElseIf (siteid = "-2") Then '关键词查询数据
             totalProducts = (From p In entity.Products
                              Where p.PictureAlt.Contains(KeyWord) OrElse p.Description.Contains(KeyWord)
                              Select p).Count()
@@ -268,7 +267,6 @@ Public Class _Default1
 
         pagesize = AspNetPager1.PageSize
         AspNetPager1.RecordCount = totalProducts
-
         parentCateTags = (From c In entity.CateTags
                           Where c.ParentID = 0
                           Select c).ToList()
@@ -276,8 +274,10 @@ Public Class _Default1
 
     Protected Sub AspNetPager1_PageChanged(sender As Object, e As EventArgs) Handles AspNetPager1.PageChanged
         Dim pageindex As Integer = AspNetPager1.CurrentPageIndex
+        'Dim pageindex As Integer = 2
         Dim products As New List(Of GetPostsFacebookSeo_Result)
         Dim keyWordid As String = Request.QueryString("keyWordId")
+        'pageindex = Val(Request.QueryString("pageIndex"))
         Dim KeyWord As String = (From k In entity.KeyWords
                                          Where k.ID = keyWordId
                                          Select k.KeyWord1).FirstOrDefault

@@ -43,7 +43,6 @@ Public Class MainStart
                 Dim lining As New LiNing
                 lining.Start(IssueID, siteId, planType, splitContactCount, spreadLogin, appId, url, categories)
             Case "facebook"
-                Common.LogText("我进入start文件了")
                 If (planType.Contains("HO")) Then
                     '获取facebook的内容
                     Dim k11artmart As New K11forFBSeo()
